@@ -6,7 +6,8 @@ pipeline {
     stage('SCM Checkout') {
       steps {
         cleanWs()
-        git branch: 'master', url: 'https://github.com/harshal2602/maven-project.git'
+        git branch: 'master',
+            url: 'https://github.com/harshal2602/maven-project.git'
       }
     }
 
@@ -24,9 +25,12 @@ pipeline {
       }
     }
 
-    stage('Push Image to DockerHub') {
+    stage('Push Image') {
       steps {
-        withDockerRegistry(credentialsId: 'Docker_hub_credentials', url: 'https://index.docker.io/v1/') {
+        withDockerRegistry(
+          credentialsId: 'Docker_hub_credentials',
+          url: 'https://index.docker.io/v1/'
+        ) {
           sh 'docker push harshal2602/devops:latest'
         }
       }
@@ -35,10 +39,13 @@ pipeline {
     stage('Deploy Container') {
       steps {
         sh '''
-        docker stop cont3 || true
-        docker rm cont3 || true
+        docker stop conatiner1 || true
+        docker rm conatiner1 || true
         docker pull harshal2602/devops:latest
-        docker run -d -p 80:8080 --name cont3 harshal2602/devops:latest
+        docker run -d \
+          --name conatiner1 \
+          -p 8080:8080 \
+          harshal2602/devops:latest
         '''
       }
     }
