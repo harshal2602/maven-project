@@ -10,7 +10,7 @@ pipeline {
     stage('compile the job') //validate then compile
     {
       steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
+        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_home', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
           sh 'mvn compile'
         }
       }
@@ -18,14 +18,14 @@ pipeline {
 
     stage('execute unit test framework') {
       steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
+        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_home', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
           sh 'mvn test'
         }
       }
     }
     stage('build the code') {
       steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
+        withMaven(globalMavenSettingsConfig: '', jdk: '', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
           sh 'mvn clean package'
         }
       }
