@@ -54,7 +54,7 @@ pipeline {
         docker stop devops-app || true
         docker rm devops-app || true
         docker pull harshal2602/devops:latest
-        docker run -d -p 80:80 --name devops-app harshal2602/devops:latest
+        docker run -d -p 8080 --name devops-app harshal2602/devops:latest
         '''
       }
     }
