@@ -38,7 +38,7 @@ pipeline {
     stage('push docker image to dockerhub') {
       steps {
         
-        withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
+        withDockerRegistry(credentialsId: 'Docker_hub_credentials', url: 'https://index.docker.io/v1/') {
             
                 sh 'docker push harshal2602/devops:latest'
             
