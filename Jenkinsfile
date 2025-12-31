@@ -3,30 +3,14 @@ pipeline {
 
   stages {
 
-    stage('scm checkout') {
+    stage('SCM Checkout') {
       steps {
         cleanWs()
         git branch: 'master', url: 'https://github.com/harshal2602/maven-project.git'
       }
     }
 
-    stage('compile') {
-      steps {
-        withMaven(jdk: 'JDK_home', maven: 'MVN_HOME') {
-          sh 'mvn compile'
-        }
-      }
-    }
-
-    stage('unit tests') {
-      steps {
-        withMaven(jdk: 'JDK_home', maven: 'MVN_HOME') {
-          sh 'mvn test'
-        }
-      }
-    }
-
-    stage('package') {
+    stage('Build WAR') {
       steps {
         withMaven(jdk: 'JDK_home', maven: 'MVN_HOME') {
           sh 'mvn clean package'
@@ -34,13 +18,13 @@ pipeline {
       }
     }
 
-    stage('create docker image') {
+    stage('Build Docker Image') {
       steps {
         sh 'docker build --no-cache -t harshal2602/devops:latest .'
       }
     }
 
-    stage('push image to dockerhub') {
+    stage('Push Image to DockerHub') {
       steps {
         withDockerRegistry(credentialsId: 'Docker_hub_credentials', url: 'https://index.docker.io/v1/') {
           sh 'docker push harshal2602/devops:latest'
@@ -48,13 +32,13 @@ pipeline {
       }
     }
 
-    stage('deploy container') {
+    stage('Deploy Container') {
       steps {
         sh '''
-        docker stop devops-app || true
-        docker rm devops-app || true
+        docker stop cont3 || true
+        docker rm cont3 || true
         docker pull harshal2602/devops:latest
-        docker run -d -p 8080 --name devops-app harshal2602/devops:latest
+        docker run -d -p 80:8080 --name cont3 harshal2602/devops:latest
         '''
       }
     }
