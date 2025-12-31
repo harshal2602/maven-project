@@ -44,7 +44,7 @@ pipeline {
         docker pull harshal2602/devops:latest
         docker run -d \
           --name conatiner1 \
-          -p 8080:8080 \
+          -p 10005:8080 \
           harshal2602/devops:latest
         '''
       }
