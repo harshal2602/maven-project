@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('scm checkout') {
       steps {
-        git branch: 'master', url: 'https://github.com/kumargaurav039/maven-project.git'
+        git branch: 'master', url: 'https://github.com/harshal2602/maven-project.git'
       }
     }
 
@@ -15,6 +15,14 @@ pipeline {
         }
       }
     }
+
+    stage('execute unit test framework') {
+      steps {
+        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
+          sh 'mvn test'
+        }
+      }
+    }
     stage('build the code') {
       steps {
         withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -22,21 +30,17 @@ pipeline {
         }
       }
     }
-
     stage('create docker image') {
       steps {
-        sh 'docker build -t e31531469/ethans954:latest .'
+        sh 'docker build -t harshal2602/devops:latest .'
       }
     }
-
-
-
     stage('push docker image to dockerhub') {
       steps {
         
         withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
             
-                sh 'docker push e31531469/ethans954:latest'
+                sh 'docker push harshal2602/devops:latest'
             
         }
       }
